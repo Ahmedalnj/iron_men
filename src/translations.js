@@ -1,0 +1,464 @@
+// ==========================================
+// BILINGUAL TRANSLATION DICTIONARY - TRANSLATIONS.JS
+// ==========================================
+
+export const translations = {
+  ar: {
+    // Ranks / Accents
+    rank: "الترتيب",
+    gold: "الذهبية 🥇",
+    silver: "الفضية 🥈",
+    bronze: "البرونزية 🥉",
+
+    // Roles
+    admin: "مسؤول النظام",
+    timekeeper: "مسجل الوقت / الحكم",
+    viewer: "مشاهد / زائر",
+    role: "الدور الحالي",
+    change_role: "تغيير صلاحية العرض لتجربة الميزات:",
+
+    // Sidebar Tabs
+    dashboard: "لوحة التحكم",
+    settings: "⚙️ الإعدادات",
+    teams: "📋 التسجيل والفرق",
+    players: "👤 قائمة اللاعبين",
+    checkin: "✅ تحضير اللاعبين",
+    timing: "⏱️ الأوقات والجزاءات",
+    results: "🏅 نتائج الفرق",
+    leaderboard: "🥇 الترتيب المباشر",
+    player_ranking: "🏆 ترتيب الأفراد",
+    incidents: "🚨 سجل الحوادث",
+    substitutions: "🔄 التبديلات",
+    notifications: "🔔 لوحة التنبيهات",
+
+    // Dashboard
+    stats_teams: "الفرق المسجلة",
+    stats_players: "اللاعبين المستعدين",
+    stats_checkins: "التحضيرات المكتملة",
+    stats_incidents: "الحوادث المفتوحة",
+    unchecked_warn: "تنبيه: لاعبين لم يتم تحضيرهم بعد!",
+    unchecked_count: "لاعباً بانتظار التحضير",
+    no_unchecked: "جميع اللاعبين تم تحضيرهم بنجاح ✅",
+    recent_incidents: "الحوادث الأخيرة",
+    no_incidents_logged: "لا توجد حوادث مسجلة حالياً",
+
+    // Settings
+    settings_title: "إعدادات البطولة (خاص بالمسؤول)",
+    t_name: "اسم البطولة",
+    t_date: "تاريخ البطولة",
+    starters_limit: "عدد الأساسيين لكل فريق",
+    reserves_limit: "الحد الأقصى للاحتياط لكل فريق",
+    barrier_pen: "جزاء إسقاط الحاجز (ثانية)",
+    obstacle_pen: "جزاء تخطي مانع (ثانية)",
+    outside_help_pen: "جزاء مساعدة خارجية (ثانية)",
+    dnf_val: "قيمة DNF / DNS الجزائية (ثانية)",
+    lock_day: "قفل يوم البطولة (تعطيل تعديل الإعدادات والفرق)",
+    save_settings: "حفظ الإعدادات",
+    backup_restore: "النسخ الاحتياطي واستعادة البيانات",
+    export_btn: "تصدير البيانات (JSON)",
+    import_btn: "استيراد البيانات",
+    reset_btn: "إعادة ضبط المصنع (حذف كل البيانات المخصصة)",
+    reset_confirm: "هل أنت متأكد من إعادة ضبط المصنع؟ سيتم مسح جميع الإدخالات الحالية واستعادة البيانات الافتراضية.",
+
+    // Teams
+    teams_title: "إدارة الفرق والتسجيل",
+    add_team: "إضافة فريق جديد",
+    edit_team: "تعديل بيانات الفريق",
+    team_num: "رمز الفريق (A-Z)",
+    team_name: "اسم الفريق",
+    manager: "اسم مدير الفريق",
+    whatsapp: "رقم الواتساب",
+    payment_status: "حالة الدفع",
+    amount_paid: "المبلغ المدفوع",
+    team_status: "حالة التسجيل",
+    save_team: "حفظ الفريق",
+    actions: "الإجراءات",
+    delete_confirm: "هل أنت متأكد من حذف هذا السجل؟ ستقوم هذه الخطوة بحذف جميع السجلات المرتبطة أيضاً.",
+
+    // Players
+    players_title: "إدارة قائمة اللاعبين",
+    add_player: "إضافة لاعب جديد",
+    edit_player: "تعديل بيانات اللاعب",
+    full_name: "الاسم الكامل",
+    player_type: "نوع اللاعب",
+    medical_notes: "ملاحظات طبية",
+    player_key: "مفتاح اللاعب الفريد",
+    player_status: "حالة اللاعب",
+    save_player: "حفظ اللاعب",
+    starter: "أساسي",
+    reserve: "احتياط",
+
+    // CheckIn
+    checkin_title: "تحضير اللاعبين يوم السباق",
+    leg_num: "رقم اللاعب (1-6)",
+    checkin_desc: "اختر الفريق والمرحلة لتحضير اللاعب وتأكيده للسباق:",
+    present: "الحضور",
+    jersey: "استلام القميص (الرقم)",
+    warmup: "إتمام الإحماء",
+    cleared: "جاهز للمنافسة",
+    not_checked_title: "قائمة اللاعبين غير المحضرين",
+    checkin_btn: "تأكيد التحضير",
+
+    // Timing
+    timing_title: "تسجيل الأوقات والجزاءات (خاص بالميقاتي)",
+    select_team: "اختر الفريق",
+    leg_times: "أوقات اللاعبين (mm:ss أو ثوانٍ)",
+    player_time_1: "وقت اللاعب الأول",
+    player_time_2: "وقت اللاعب الثاني",
+    player_time_3: "وقت اللاعب الثالث",
+    player_time_4: "وقت اللاعب الرابع",
+    player_time_5: "وقت اللاعب الخامس",
+    player_time_6: "وقت اللاعب السادس",
+    barriers: "عدد الحواجز المسقطة",
+    obstacles: "عدد الموانع المتخطاة",
+    outside_help: "عدد المساعدات الخارجية",
+    player_pens: "الجزاءات الفردية للاعبين (ثوانٍ)",
+    player_pen_1: "جزاء اللاعب الأول",
+    player_pen_2: "جزاء اللاعب الثاني",
+    player_pen_3: "جزاء اللاعب الثالث",
+    player_pen_4: "جزاء اللاعب الرابع",
+    player_pen_5: "جزاء اللاعب الخامس",
+    player_pen_6: "جزاء اللاعب السادس",
+    result_status: "حالة النتيجة العامة",
+    judge: "اسم حكم الساحة / الميقاتي",
+    live_computed: "الحسابات المباشرة للفريق",
+    total_penalty: "إجمالي ثواني الجزاءات",
+    final_time: "الزمن النهائي (شاملاً الجزاءات)",
+    save_timing: "حفظ وإدخال النتيجة",
+
+    // Results
+    results_title: "نتائج الفرق الإجمالية",
+    overall_rank: "الترتيب العام",
+    raw_time: "مجموع أزمنة المراحل",
+    penalty_sec: "الجزاءات المضافة",
+    total_time: "الزمن النهائي المحتسب",
+    status: "حالة الفريق",
+
+    // Leaderboard
+    leaderboard_title: "الترتيب المباشر (شاشة العرض الكبرى)",
+    projector_mode: "تفعيل شاشة العرض (Projector Mode)",
+    exit_projector: "خروج من شاشة العرض",
+    gap: "الفارق عن المركز الأول",
+    no_results: "بانتظار تسجيل النتائج للفرق لبدء الترتيب...",
+
+    // Player Rankings
+    player_rank_title: "ترتيب أفراد البطولة (أسرع زمن للمرحلة)",
+    individual_time: "الزمن الفردي المكتمل",
+    individual_pen: "الجزاء الفردي",
+
+    // Incidents
+    incidents_title: "تسجيل الحوادث والإصابات الرياضية",
+    log_incident: "تسجيل حادثة جديدة",
+    incident_time: "وقت الحدوث",
+    incident_type: "نوع الحادثة",
+    body_part: "عضو الجسم المصاب",
+    severity: "درجة الخطورة",
+    continued: "هل أكمل المنافسة؟",
+    save_incident: "حفظ الحادثة",
+
+    // Substitutions
+    sub_title: "طلب تبديل لاعب (ترقية الاحتياط)",
+    sub_wizard: "معالج تبديلات اللاعبين المصابين أو المنسحبين",
+    replaced_player: "اللاعب المراد استبداله",
+    replacement_player: "اللاعب الاحتياطي البديل",
+    reason: "سبب التبديل",
+    approving_judge: "الحكم المعتمد للتبديل",
+    sub_time: "وقت التبديل",
+    execute_sub: "اعتماد وتنفيذ التبديل فوراً",
+    sub_history: "سجل عمليات التبديل المكتملة",
+    limit_reached: "خطأ: تم الوصول للحد الأقصى للتبديل أو لا يوجد لاعبين احتياط متوفرين.",
+
+    // Notifications
+    notification_title: "تنبيهات البطولة والإصابات",
+    required_action: "الإجراء المطلوب",
+    no_notifications: "لا توجد تنبيهات عاجلة حتى الآن.",
+
+    // Payment levels
+    Paid: "مدفوع",
+    Pending: "قيد الانتظار",
+    Waived: "معفى من الرسوم",
+    Refunded: "مسترجع",
+    
+    // Status levels
+    Ready: "مستعد",
+    Injured: "مصاب",
+    Withdrawn: "منسحب",
+    DNS: "لم يبدأ (DNS)",
+    DNF: "لم ينه السباق (DNF)",
+    Completed: "أنهى السباق",
+    Substituted: "تم استبداله",
+
+    // Severity levels
+    Minor: "طفيفة",
+    Moderate: "متوسطة",
+    Severe: "شديدة",
+    Critical: "حرجة جداً",
+
+    // Body parts
+    Head: "الرأس",
+    Neck: "الرقبة",
+    Shoulder: "الكتف",
+    Arm: "الذراع",
+    Hand: "اليد",
+    Back: "الظهر",
+    Hip: "الورك",
+    Knee: "الركبة",
+    Ankle: "الكاحل",
+    Foot: "القدم",
+    Other: "عضو آخر",
+
+    // Incident types
+    Injury: "إصابة بدنية",
+    Fall: "سقوط / تعثر",
+    Equipment_Failure: "عطل في المعدات",
+    Medical_Stop: "تدخل طبي طارئ",
+    Withdrawal: "انسحاب مفاجئ",
+
+    // Substitution reasons
+    Injury_Reason: "إصابة بدنية",
+    Withdrawal_Reason: "انسحاب اللاعب",
+    Late_Arrival: "تأخر عن الحضور",
+    Disqualification: "استبعاد من الحكام",
+
+    // General Words
+    yes: "نعم",
+    no: "لا",
+    save: "حفظ",
+    cancel: "إلغاء",
+    edit: "تعديل",
+    delete: "حذف",
+    search: "بحث عن فريق...",
+    filter: "تصفية حسب الحالات",
+    unregistered: "غير مسجل",
+    lock_status: "🔒 الإعدادات مقفلة يوم البطولة"
+  },
+  en: {
+    // Ranks / Accents
+    rank: "Rank",
+    gold: "Gold 🥇",
+    silver: "Silver 🥈",
+    bronze: "Bronze 🥉",
+
+    // Roles
+    admin: "Administrator",
+    timekeeper: "Timekeeper / Judge",
+    viewer: "Spectator / Visitor",
+    role: "Current Role",
+    change_role: "Switch role to test full features:",
+
+    // Sidebar Tabs
+    dashboard: "Dashboard",
+    settings: "⚙️ Settings",
+    teams: "📋 Teams & Reg",
+    players: "👤 Players Roster",
+    checkin: "✅ Check-In Checklist",
+    timing: "⏱️ Timing & Penalties",
+    results: "🏅 Team Results",
+    leaderboard: "🥇 Live Leaderboard",
+    player_ranking: "🏆 Player Rankings",
+    incidents: "🚨 Incidents Log",
+    substitutions: "🔄 Substitutions",
+    notifications: "🔔 Alerts & Notifications",
+
+    // Dashboard
+    stats_teams: "Registered Teams",
+    stats_players: "Ready Players",
+    stats_checkins: "Completed Check-ins",
+    stats_incidents: "Logged Incidents",
+    unchecked_warn: "Warning: Players not yet checked in!",
+    unchecked_count: "players awaiting check-in",
+    no_unchecked: "All players successfully checked in ✅",
+    recent_incidents: "Recent Incidents",
+    no_incidents_logged: "No incidents recorded yet",
+
+    // Settings
+    settings_title: "Tournament Configuration (Admin)",
+    t_name: "Tournament Name",
+    t_date: "Tournament Date",
+    starters_limit: "Starters limit per team",
+    reserves_limit: "Max reserves per team",
+    barrier_pen: "Barrier knock penalty (sec)",
+    obstacle_pen: "Obstacle skip penalty (sec)",
+    outside_help_pen: "Outside help penalty (sec)",
+    dnf_val: "DNF / DNS sentinel value (sec)",
+    lock_day: "Lock Tournament Day (Disables edits to Settings/Teams)",
+    save_settings: "Save Settings",
+    backup_restore: "Backup & Restore Database",
+    export_btn: "Export State (JSON)",
+    import_btn: "Import State File",
+    reset_btn: "Factory Reset (Wipe Custom Data)",
+    reset_confirm: "Are you sure you want to perform a factory reset? All current data will be replaced with seeds.",
+
+    // Teams
+    teams_title: "Team Registration",
+    add_team: "Add New Team",
+    edit_team: "Edit Team Details",
+    team_num: "Team Letter (A-Z)",
+    team_name: "Team Name",
+    manager: "Manager Name",
+    whatsapp: "WhatsApp Number",
+    payment_status: "Payment Status",
+    amount_paid: "Amount Paid",
+    team_status: "Registration Status",
+    save_team: "Save Team Info",
+    actions: "Actions",
+    delete_confirm: "Are you sure you want to delete this record? This will cascade-delete all related data.",
+
+    // Players
+    players_title: "Player Rosters",
+    add_player: "Add Roster Player",
+    edit_player: "Edit Player Info",
+    full_name: "Full Name",
+    player_type: "Player Slot",
+    medical_notes: "Medical Profile",
+    player_key: "Unique Player Key",
+    player_status: "Player Status",
+    save_player: "Save Player",
+    starter: "Starter",
+    reserve: "Reserve",
+
+    // CheckIn
+    checkin_title: "Race-Day Check-in",
+    leg_num: "Leg Number (1-6)",
+    checkin_desc: "Search team and select leg to check-in player:",
+    present: "Attendance",
+    jersey: "Jersey Received",
+    warmup: "Warmup Completed",
+    cleared: "Cleared to Compete",
+    not_checked_title: "Awaiting Check-in Roster",
+    checkin_btn: "Confirm Check-in",
+
+    // Timing
+    timing_title: "Live Race Timing & Penalties",
+    select_team: "Select Team",
+    leg_times: "Player Times (enter in seconds or mm:ss format)",
+    player_time_1: "Player 1 Time",
+    player_time_2: "Player 2 Time",
+    player_time_3: "Player 3 Time",
+    player_time_4: "Player 4 Time",
+    player_time_5: "Player 5 Time",
+    player_time_6: "Player 6 Time",
+    barriers: "Barriers Knocked Count",
+    obstacles: "Obstacles Skipped Count",
+    outside_help: "Outside Help Counts",
+    player_pens: "Individual Player Penalties (seconds)",
+    player_pen_1: "Player 1 Pen",
+    player_pen_2: "Player 2 Pen",
+    player_pen_3: "Player 3 Pen",
+    player_pen_4: "Player 4 Pen",
+    player_pen_5: "Player 5 Pen",
+    player_pen_6: "Player 6 Pen",
+    result_status: "Overall Result Status",
+    judge: "Judge / Timekeeper Name",
+    live_computed: "Live Calculations Preview",
+    total_penalty: "Total Penalty Time",
+    final_time: "Final Total Time",
+    save_timing: "Save & Log Time",
+
+    // Results
+    results_title: "Overall Team Standings",
+    overall_rank: "Overall Rank",
+    raw_time: "Sum of Leg Times",
+    penalty_sec: "Penalty Seconds",
+    total_time: "Effective Time",
+    status: "Status",
+
+    // Leaderboard
+    leaderboard_title: "Live Leaderboard",
+    projector_mode: "Projector Mode",
+    exit_projector: "Exit Presentation Mode",
+    gap: "Gap to 1st",
+    no_results: "Awaiting race results to display standings...",
+
+    // Player Rankings
+    player_rank_title: "Individual Player Rankings (Leg Speed)",
+    individual_time: "Individual Leg Time",
+    individual_pen: "Individual Penalty",
+
+    // Incidents
+    incidents_title: "Sports Injury & Incident Log",
+    log_incident: "Log New Incident",
+    incident_time: "Time occurred",
+    incident_type: "Incident Category",
+    body_part: "Injured Body Part",
+    severity: "Severity Level",
+    continued: "Did player continue?",
+    save_incident: "Save Incident Log",
+
+    // Substitutions
+    sub_title: "Player Substitution (Reserve Upgrade)",
+    sub_wizard: "Injured / Withdrawn Player Roster Substitution Wizard",
+    replaced_player: "Player being Replaced",
+    replacement_player: "Promoted Reserve Player",
+    reason: "Reason for replacement",
+    approving_judge: "Approving Judge Name",
+    sub_time: "Substitution Time",
+    execute_sub: "Apply & Reflow Keys Immediately",
+    sub_history: "Substitution logs",
+    limit_reached: "Error: Max limit reached or no reserve player available.",
+
+    // Notifications
+    notification_title: "Live Notification Log",
+    required_action: "Required Action",
+    no_notifications: "No alerts generated yet.",
+
+    // Payment levels
+    Paid: "Paid",
+    Pending: "Pending",
+    Waived: "Waived",
+    Refunded: "Refunded",
+
+    // Status levels
+    Ready: "Ready",
+    Injured: "Injured",
+    Withdrawn: "Withdrawn",
+    DNS: "DNS",
+    DNF: "DNF",
+    Completed: "Completed",
+    Substituted: "Substituted",
+
+    // Severity levels
+    Minor: "Minor",
+    Moderate: "Moderate",
+    Severe: "Severe",
+    Critical: "Critical",
+
+    // Body parts
+    Head: "Head",
+    Neck: "Neck",
+    Shoulder: "Shoulder",
+    Arm: "Arm",
+    Hand: "Hand",
+    Back: "Back",
+    Hip: "Hip",
+    Knee: "Knee",
+    Ankle: "Ankle",
+    Foot: "Foot",
+    Other: "Other",
+
+    // Incident types
+    Injury: "Injury",
+    Fall: "Fall / Trip",
+    Equipment_Failure: "Equipment Failure",
+    Medical_Stop: "Medical Stop",
+    Withdrawal: "Withdrawal",
+
+    // Substitution reasons
+    Injury_Reason: "Physical Injury",
+    Withdrawal_Reason: "Roster Withdrawal",
+    Late_Arrival: "Late Arrival",
+    Disqualification: "Disqualified",
+
+    // General Words
+    yes: "Yes",
+    no: "No",
+    save: "Save",
+    cancel: "Cancel",
+    edit: "Edit",
+    delete: "Delete",
+    search: "Search team...",
+    filter: "Filter by status",
+    unregistered: "Unregistered",
+    lock_status: "🔒 Config Locked on Raceday"
+  }
+};
