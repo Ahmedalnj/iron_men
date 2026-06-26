@@ -12,9 +12,41 @@ import { validateTiming } from "../utils/validation";
 import { secondsToTimeString, timeStringToSeconds } from "../utils/timeHelpers";
 import { Save, AlertTriangle, ShieldCheck, CheckCircle2 } from "lucide-react";
 
+const formatDuration = (totalSeconds, locale = "en", options = {}) => {
+  const seconds = Number(totalSeconds);
+  if (!Number.isFinite(seconds)) return "";
+
+  const absSeconds = Math.abs(seconds);
+  const minutes = Math.floor(absSeconds / 60);
+  const remainderSeconds = absSeconds % 60;
+  const isArabic = locale === "ar";
+  const parts = [];
+
+  if (minutes > 0) {
+    parts.push(isArabic ? `${minutes} دقيقة${minutes === 1 ? "" : ""}` : `${minutes} min`);
+  }
+
+  if (remainderSeconds > 0 || parts.length === 0) {
+    parts.push(
+      isArabic
+        ? `${remainderSeconds} ثانية${remainderSeconds === 1 ? "" : "ٍ"}`
+        : `${remainderSeconds} sec`,
+    );
+  }
+
+  const formatted = isArabic ? parts.join(" و") : parts.join(" ");
+  if (options.forceSign) {
+    if (seconds > 0) return `+${formatted}`;
+    if (seconds < 0) return `-${formatted}`;
+  }
+
+  return formatted;
+};
+
 export default function Timing({ t, role, syncTick }) {
   const { toast, confirm } = useAppContext();
   const canEdit = role === "admin" || role === "timekeeper";
+  const locale = t("yes") === "نعم" ? "ar" : "en";
 
   const [teams, setTeams] = useState([]);
   const [settings, setSettings] = useState({});
@@ -147,20 +179,11 @@ export default function Timing({ t, role, syncTick }) {
       const entry = getTimingEntryByTeam(selectedTeam);
       setTiming(entry);
       setError("");
-      setMsg(
-        t("yes") === "نعم"
-          ? "تم تسجيل وتحديث أوقات الفريق بنجاح!"
-          : "Timing details updated successfully!",
-      );
-      toast(
-        t("yes") === "نعم"
-          ? "تم حفظ الأوقات بنجاح"
-          : "Timing saved successfully",
-        "success",
-      );
+      setMsg(t("timing_saved_success"));
+      toast(t("timing_saved_toast"), "success");
       setTimeout(() => setMsg(""), 3000);
     } catch (err) {
-      setError(err.message || "Unable to save timing");
+      setError(err.message || t("unable_save_timing"));
     }
   };
 
@@ -181,18 +204,11 @@ export default function Timing({ t, role, syncTick }) {
             leg5: "",
             leg6: "",
           });
-          setMsg(
-            t("yes") === "نعم"
-              ? "تم مسح نتيجة الفريق بنجاح!"
-              : "Team timing cleared successfully!",
-          );
-          toast(
-            t("yes") === "نعم" ? "تم حذف نتائج الفريق" : "Team timing cleared",
-            "success",
-          );
+          setMsg(t("timing_cleared_success"));
+          toast(t("timing_cleared_toast"), "success");
           setTimeout(() => setMsg(""), 3000);
         } catch (err) {
-          toast(err.message || "Unable to clear timing", "error");
+          toast(err.message || t("unable_clear_timing"), "error");
         }
       },
       { title: t("delete") || "Delete", variant: "danger" },
@@ -220,12 +236,10 @@ export default function Timing({ t, role, syncTick }) {
           <AlertTriangle size={20} />
           <div>
             <div className="alert-banner-title">
-              {t("yes") === "نعم" ? "عرض فقط" : "Access Restricted"}
+              {t("access_restricted_title")}
             </div>
             <div className="alert-banner-desc">
-              {t("yes") === "نعم"
-                ? "يجب تسجيل الدخول كميقاتي أو مسؤول لتسجيل الأوقات."
-                : "You must switch your role to Timekeeper or Admin in the header to enter race timing."}
+              {t("access_restricted_desc")}
             </div>
           </div>
         </div>
@@ -335,7 +349,7 @@ export default function Timing({ t, role, syncTick }) {
               color: "var(--color-primary-hover)",
             }}
           >
-            ⚠️ الجزاءات الجماعية / Team-Level Penalties
+            ⚠️ {t("team_penalties")}
           </h3>
           <div className="form-grid">
             <div className="form-group">
@@ -428,7 +442,7 @@ export default function Timing({ t, role, syncTick }) {
               color: "var(--color-primary-hover)",
             }}
           >
-            ⚖️ تحكيم السباق / Officiating
+            ⚖️ {t("officiating")}
           </h3>
           <div className="form-grid">
             <div className="form-group">
@@ -442,9 +456,7 @@ export default function Timing({ t, role, syncTick }) {
                 }
               >
                 <option value="Pending">{t("Pending")}</option>
-                <option value="Finished">
-                  {t("yes") === "نعم" ? "منتهي Finished" : "Finished"}
-                </option>
+                <option value="Finished">{t("Finished")}</option>
                 <option value="DNS">{t("DNS")}</option>
                 <option value="DNF">{t("DNF")}</option>
                 <option value="Injured">{t("Injured")}</option>
@@ -463,7 +475,7 @@ export default function Timing({ t, role, syncTick }) {
                   handleInputChange("judge_name", e.target.value)
                 }
               >
-                <option value="">-- اختر حكماً --</option>
+                <option value="">{t("select_judge")}</option>
                 {(settings.judges || []).length > 0
                   ? settings.judges.map((judge) => (
                       <option key={judge} value={judge}>
@@ -541,16 +553,7 @@ export default function Timing({ t, role, syncTick }) {
                   className="timer-text"
                   style={{ fontSize: "1.5rem", fontWeight: "bold" }}
                 >
-                  {secondsToTimeString(liveTotals.rawSumSec) || "--:--"}
-                  <span
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "#9ca3af",
-                      marginInlineStart: "0.5rem",
-                    }}
-                  >
-                    ({liveTotals.rawSumSec}s)
-                  </span>
+                  {formatDuration(liveTotals.rawSumSec, locale) || "--"}
                 </span>
               </div>
 
@@ -560,7 +563,11 @@ export default function Timing({ t, role, syncTick }) {
                   className="timer-text text-danger"
                   style={{ fontSize: "1.5rem", fontWeight: "bold" }}
                 >
-                  +{liveTotals.penaltySec}s
+                  {formatDuration(
+                    liveTotals.penaltySec,
+                    t("yes") === "نعم" ? "ar" : "en",
+                    { forceSign: true },
+                  )}
                 </span>
               </div>
 
@@ -591,8 +598,7 @@ export default function Timing({ t, role, syncTick }) {
                         className="badge refunded"
                         style={{ fontSize: "1rem", padding: "0.4rem 0.8rem" }}
                       >
-                        {timing.result_status} ({settings.dnf_dns_injury_value}
-                        s)
+                        {timing.result_status} ({formatDuration(settings.dnf_dns_injury_value, locale)})
                       </span>
                       <span
                         className="timer-text block mt-1"
@@ -602,8 +608,10 @@ export default function Timing({ t, role, syncTick }) {
                           color: "#6b7280",
                         }}
                       >
-                        Literal time:{" "}
-                        {secondsToTimeString(liveTotals.totalResultSec)}
+                        {t("literal_time")}: {formatDuration(
+                          liveTotals.totalResultSec,
+                          t("yes") === "نعم" ? "ar" : "en",
+                        )}
                       </span>
                     </div>
                   ) : (
@@ -616,17 +624,7 @@ export default function Timing({ t, role, syncTick }) {
                         textShadow: "0 0 10px var(--color-gold-glow)",
                       }}
                     >
-                      {secondsToTimeString(liveTotals.totalResultSec) ||
-                        "--:--"}
-                      <span
-                        style={{
-                          fontSize: "1rem",
-                          color: "#fff",
-                          marginInlineStart: "0.5rem",
-                        }}
-                      >
-                        ({liveTotals.totalResultSec}s)
-                      </span>
+                      {formatDuration(liveTotals.totalResultSec, locale) || "--"}
                     </span>
                   )}
                 </div>
@@ -637,7 +635,7 @@ export default function Timing({ t, role, syncTick }) {
           {/* Quick Roster Status */}
           <div className="card">
             <div className="card-header">
-              <h3 className="card-title">🏃‍♂️ تشكيلة الفريق / Team Lineup</h3>
+              <h3 className="card-title">{t("team_lineup_title")}</h3>
             </div>
             <div
               style={{

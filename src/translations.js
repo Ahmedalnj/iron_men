@@ -19,17 +19,17 @@ export const translations = {
 
     // Sidebar Tabs
     dashboard: "لوحة التحكم",
-    settings: "⚙️ الإعدادات",
-    teams: "📋 التسجيل والفرق",
-    players: "👤 قائمة اللاعبين",
-    checkin: "✅ تحضير اللاعبين",
-    timing: "⏱️ الأوقات والجزاءات",
-    results: "🏅 نتائج الفرق",
-    leaderboard: "🥇 الترتيب المباشر",
-    player_ranking: "🏆 ترتيب الأفراد",
-    incidents: "🚨 سجل الحوادث",
-    substitutions: "🔄 التبديلات",
-    notifications: "🔔 لوحة التنبيهات",
+    settings: " الإعدادات",
+    teams: " التسجيل والفرق",
+    players: " قائمة اللاعبين",
+    checkin: " تحضير اللاعبين",
+    timing: " الأوقات والجزاءات",
+    results: " نتائج الفرق",
+    leaderboard: " الترتيب المباشر",
+    player_ranking: " ترتيب الأفراد",
+    incidents: " سجل الحوادث",
+    substitutions: " التبديلات",
+    notifications: " لوحة التنبيهات",
 
     // Dashboard
     stats_teams: "الفرق المسجلة",
@@ -58,7 +58,8 @@ export const translations = {
     export_btn: "تصدير البيانات (JSON)",
     import_btn: "استيراد البيانات",
     reset_btn: "إعادة ضبط المصنع (حذف كل البيانات المخصصة)",
-    reset_confirm: "هل أنت متأكد من إعادة ضبط المصنع؟ سيتم مسح جميع الإدخالات الحالية واستعادة البيانات الافتراضية.",
+    reset_confirm:
+      "هل أنت متأكد من إعادة ضبط المصنع؟ سيتم مسح جميع الإدخالات الحالية واستعادة البيانات الافتراضية.",
 
     // Teams
     teams_title: "إدارة الفرق والتسجيل",
@@ -73,7 +74,8 @@ export const translations = {
     team_status: "حالة التسجيل",
     save_team: "حفظ الفريق",
     actions: "الإجراءات",
-    delete_confirm: "هل أنت متأكد من حذف هذا السجل؟ ستقوم هذه الخطوة بحذف جميع السجلات المرتبطة أيضاً.",
+    delete_confirm:
+      "هل أنت متأكد من حذف هذا السجل؟ ستقوم هذه الخطوة بحذف جميع السجلات المرتبطة أيضاً.",
 
     // Players
     players_title: "إدارة قائمة اللاعبين",
@@ -93,11 +95,20 @@ export const translations = {
     leg_num: "رقم اللاعب (1-6)",
     checkin_desc: "اختر الفريق والمرحلة لتحضير اللاعب وتأكيده للسباق:",
     present: "الحضور",
+    Present: "حاضر",
+    Absent: "غائب",
+    Late: "متأخر",
     jersey: "استلام القميص (الرقم)",
     warmup: "إتمام الإحماء",
     cleared: "جاهز للمنافسة",
     not_checked_title: "قائمة اللاعبين غير المحضرين",
     checkin_btn: "تأكيد التحضير",
+    confirmed_checkins: "قائمة الحضور والجاهزية المعتمدة",
+    no_checked_in_players: "لا يوجد لاعبون محضرون حالياً.",
+    no_player_in_slot: "لا يوجد لاعب مسجل في رمز الخانة",
+    checkin_saved_success: "تم حفظ حالة التحضير بنجاح!",
+    checkin_save_failed: "فشل حفظ حالة التحضير.",
+    checkin_delete_success: "تم حذف حالة التحضير بنجاح!",
 
     // Timing
     timing_title: "تسجيل الأوقات والجزاءات (خاص بالميقاتي)",
@@ -115,6 +126,7 @@ export const translations = {
     player_pens: "الجزاءات الفردية للاعبين (ثوانٍ)",
     player_pen_1: "جزاء اللاعب الأول",
     player_pen_2: "جزاء اللاعب الثاني",
+    team_lineup_title: "🏃‍♂️ التشكيلة: A (3 أساسيين، 2 احتياط)",
     player_pen_3: "جزاء اللاعب الثالث",
     player_pen_4: "جزاء اللاعب الرابع",
     player_pen_5: "جزاء اللاعب الخامس",
@@ -125,6 +137,18 @@ export const translations = {
     total_penalty: "إجمالي ثواني الجزاءات",
     final_time: "الزمن النهائي (شاملاً الجزاءات)",
     save_timing: "حفظ وإدخال النتيجة",
+    timing_saved_success: "تم حفظ وتحديث أوقات الفريق بنجاح!",
+    timing_saved_toast: "تم حفظ الأوقات بنجاح",
+    timing_cleared_success: "تم مسح نتيجة الفريق بنجاح!",
+    timing_cleared_toast: "تم حذف نتائج الفريق",
+    access_restricted_title: "عرض فقط",
+    access_restricted_desc: "يجب تسجيل الدخول كميقاتي أو مسؤول لتسجيل الأوقات.",
+    select_judge: "-- اختر حكماً --",
+    literal_time: "الزمن الحقيقي",
+    unable_save_timing: "فشل حفظ الأوقات.",
+    unable_clear_timing: "فشل مسح الأوقات.",
+    team_penalties: "الجزاءات الجماعية",
+    officiating: "التحكيم",
 
     // Results
     results_title: "نتائج الفرق الإجمالية",
@@ -166,7 +190,8 @@ export const translations = {
     sub_time: "وقت التبديل",
     execute_sub: "اعتماد وتنفيذ التبديل فوراً",
     sub_history: "سجل عمليات التبديل المكتملة",
-    limit_reached: "خطأ: تم الوصول للحد الأقصى للتبديل أو لا يوجد لاعبين احتياط متوفرين.",
+    limit_reached:
+      "خطأ: تم الوصول للحد الأقصى للتبديل أو لا يوجد لاعبين احتياط متوفرين.",
 
     // Notifications
     notification_title: "تنبيهات البطولة والإصابات",
@@ -178,13 +203,14 @@ export const translations = {
     Pending: "قيد الانتظار",
     Waived: "معفى من الرسوم",
     Refunded: "مسترجع",
-    
+
     // Status levels
     Ready: "مستعد",
     Injured: "مصاب",
     Withdrawn: "منسحب",
     DNS: "لم يبدأ (DNS)",
     DNF: "لم ينه السباق (DNF)",
+    Finished: "منتهي",
     Completed: "أنهى السباق",
     Substituted: "تم استبداله",
 
@@ -230,7 +256,7 @@ export const translations = {
     search: "بحث عن فريق...",
     filter: "تصفية حسب الحالات",
     unregistered: "غير مسجل",
-    lock_status: "🔒 الإعدادات مقفلة يوم البطولة"
+    lock_status: "🔒 الإعدادات مقفلة يوم البطولة",
   },
   en: {
     // Ranks / Accents
@@ -287,7 +313,8 @@ export const translations = {
     export_btn: "Export State (JSON)",
     import_btn: "Import State File",
     reset_btn: "Factory Reset (Wipe Custom Data)",
-    reset_confirm: "Are you sure you want to perform a factory reset? All current data will be replaced with seeds.",
+    reset_confirm:
+      "Are you sure you want to perform a factory reset? All current data will be replaced with seeds.",
 
     // Teams
     teams_title: "Team Registration",
@@ -302,7 +329,8 @@ export const translations = {
     team_status: "Registration Status",
     save_team: "Save Team Info",
     actions: "Actions",
-    delete_confirm: "Are you sure you want to delete this record? This will cascade-delete all related data.",
+    delete_confirm:
+      "Are you sure you want to delete this record? This will cascade-delete all related data.",
 
     // Players
     players_title: "Player Rosters",
@@ -322,11 +350,20 @@ export const translations = {
     leg_num: "Leg Number (1-6)",
     checkin_desc: "Search team and select leg to check-in player:",
     present: "Attendance",
+    Present: "Present",
+    Absent: "Absent",
+    Late: "Late",
     jersey: "Jersey Received",
     warmup: "Warmup Completed",
     cleared: "Cleared to Compete",
     not_checked_title: "Awaiting Check-in Roster",
     checkin_btn: "Confirm Check-in",
+    confirmed_checkins: "Confirmed Check-ins",
+    no_checked_in_players: "No checked-in players yet.",
+    no_player_in_slot: "No active player occupies slot",
+    checkin_saved_success: "Check-in saved successfully!",
+    checkin_save_failed: "Failed to save check-in.",
+    checkin_delete_success: "Check-in cleared successfully!",
 
     // Timing
     timing_title: "Live Race Timing & Penalties",
@@ -354,6 +391,20 @@ export const translations = {
     total_penalty: "Total Penalty Time",
     final_time: "Final Total Time",
     save_timing: "Save & Log Time",
+    timing_saved_success: "Timing details updated successfully!",
+    timing_saved_toast: "Timing saved successfully",
+    timing_cleared_success: "Team timing cleared successfully!",
+    timing_cleared_toast: "Team timing cleared",
+    access_restricted_title: "View Only",
+    access_restricted_desc:
+      "You must switch your role to Timekeeper or Admin in the header to enter race timing.",
+    select_judge: "-- Select Judge --",
+    literal_time: "Literal time",
+    unable_save_timing: "Unable to save timing.",
+    unable_clear_timing: "Unable to clear timing.",
+    team_penalties: "Team-level penalties",
+    officiating: "Officiating",
+    team_lineup_title: "🏃‍♂️ Roster: A (3 Starters, 2 Reserves)",
 
     // Results
     results_title: "Overall Team Standings",
@@ -414,6 +465,7 @@ export const translations = {
     Withdrawn: "Withdrawn",
     DNS: "DNS",
     DNF: "DNF",
+    Finished: "Finished",
     Completed: "Completed",
     Substituted: "Substituted",
 
@@ -459,6 +511,6 @@ export const translations = {
     search: "Search team...",
     filter: "Filter by status",
     unregistered: "Unregistered",
-    lock_status: "🔒 Config Locked on Raceday"
-  }
+    lock_status: "🔒 Config Locked on Raceday",
+  },
 };

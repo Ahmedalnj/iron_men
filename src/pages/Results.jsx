@@ -205,7 +205,8 @@ export default function Results({ t, syncTick }) {
                                 borderRadius: "4px",
                               }}
                             >
-                              L{num}:{" "}
+                              {isArabic ? `اللاعب رقم ${num}` : `Player ${num}`}
+                              :{" "}
                               {formatDurationLabel(legTime, {
                                 locale: isArabic ? "ar" : "en",
                               })}

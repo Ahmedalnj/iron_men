@@ -107,9 +107,30 @@ export async function fetchAllFromSupabase() {
     if (incidents) cache.incidents = incidents;
     if (substitutions) cache.substitutions = substitutions;
 
+    const errors = [];
+    if (errTeams) errors.push(`Teams: ${errTeams.message || errTeams}`);
+    if (errPlayers) errors.push(`Players: ${errPlayers.message || errPlayers}`);
+    if (errCheckins)
+      errors.push(`Checkins: ${errCheckins.message || errCheckins}`);
+    if (errTiming) errors.push(`Timing: ${errTiming.message || errTiming}`);
+    if (errIncidents)
+      errors.push(`Incidents: ${errIncidents.message || errIncidents}`);
+    if (errSubstitutions)
+      errors.push(
+        `Substitutions: ${errSubstitutions.message || errSubstitutions}`,
+      );
+    if (errSettings && errSettings.code !== "PGRST116") {
+      errors.unshift(`Settings: ${errSettings.message || errSettings}`);
+    }
+
     emitStateChange();
+
+    if (errors.length > 0) {
+      throw new Error(errors.join("; "));
+    }
   } catch (err) {
     console.error("Error refreshing Supabase cache:", err);
+    throw err;
   }
 }
 

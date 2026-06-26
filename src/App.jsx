@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { useAppContext } from "./context/AppContext";
+import { fetchAllFromSupabase } from "./state";
 import LoadingScreen from "./components/LoadingScreen";
 import Toast from "./components/Toast";
 import ConfirmDialog from "./components/ConfirmDialog";
@@ -45,6 +46,7 @@ import Notifications from "./pages/Notifications";
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
   const {
     language,
     setLanguage,
@@ -74,6 +76,18 @@ export default function App() {
     navigate(path);
     const content = document.querySelector(".page-content");
     if (content) content.scrollTop = 0;
+  };
+
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      await fetchAllFromSupabase();
+      toast("Data refreshed successfully", "success");
+    } catch (error) {
+      toast(error?.message || "Failed to refresh data", "error");
+    } finally {
+      setIsRefreshing(false);
+    }
   };
 
   const menuItems = [
@@ -204,15 +218,43 @@ export default function App() {
             </button>
           </div>
 
-          <span className={`role-badge ${role}`}>🛡️ {t(role)}</span>
-          <span
+          {/* <span className={`role-badge ${role}`}>🛡️ {t(role)}</span> */}
+          {/* <span
             className={`role-badge ${isOnline ? "admin" : "viewer"}`}
             style={{ padding: "0.35rem 0.6rem" }}
           >
             {isOnline ? <Wifi size={14} /> : <WifiOff size={14} />}{" "}
             {isOnline ? "Online" : "Offline"}
-          </span>
+          </span> */}
 
+          <button
+            className="btn btn-secondary"
+            onClick={refreshData}
+            disabled={isRefreshing}
+            title="Refresh Data"
+            style={{
+              padding: "0.4rem 0.8rem",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.35rem",
+            }}
+          >
+            <RefreshCw
+              size={16}
+              style={
+                isRefreshing
+                  ? { animation: "spin 1s linear infinite" }
+                  : undefined
+              }
+            />
+            {isRefreshing
+              ? language === "ar"
+                ? "جارٍ التحديث"
+                : "Refreshing..."
+              : language === "ar"
+                ? "تحديث"
+                : "Refresh"}
+          </button>
           <button
             className="btn btn-secondary"
             onClick={toggleLanguage}
