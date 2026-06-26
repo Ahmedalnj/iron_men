@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getTeams, upsertTeam, deleteTeam, getSettings } from "../state";
+import { useAppContext } from "../context/AppContext";
+import { validateTeam } from "../utils/validation";
 import { Plus, Edit2, Trash2, Check, X, ShieldAlert } from "lucide-react";
 
 // Convert a 1-based index to an Excel-style letter code: 1 -> A, 2 -> B ... 26 -> Z, 27 -> AA, 28 -> AB ...
@@ -40,6 +42,7 @@ function getNextTeamCode(existingTeams) {
 }
 
 export default function Teams({ t, role, syncTick }) {
+  const { toast, confirm } = useAppContext();
   const isAdmin = role === "admin";
   const [teams, setTeams] = useState([]);
   const [settings, setSettings] = useState({});
@@ -86,71 +89,57 @@ export default function Teams({ t, role, syncTick }) {
     setError("");
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
     if (!isAdmin) return;
 
-    // Validations: accept Excel-style letter codes (A, B, ... Z, AA, AB, ...)
     const teamNum = formData.team_number.trim().toUpperCase();
-    if (!/^[A-Z]+$/.test(teamNum)) {
-      setError(
-        t("yes") === "نعم"
-          ? "يجب أن يكون رمز الفريق حروفاً فقط (A, B, ...Z, AA, AB...)"
-          : "Team code must be letters only (A, B, ...Z, AA, AB...)",
-      );
-      return;
-    }
-    const LIBYA_MOBILE_REGEX = /^09[1-5][0-9]{7}$/;
-    const phone = formData.whatsapp_number.trim();
-
-    if (phone && !LIBYA_MOBILE_REGEX.test(phone)) {
-      setError(
-        t("yes") === "نعم"
-          ? "رقم الواتساب غير صحيح. يجب أن يبدأ بـ 91/92/93/94/95 ويتكون من 9 أرقام"
-          : "Invalid WhatsApp number. Must start with 91/92/93/94/95 and be 9 digits",
-      );
-      return;
-    }
-    if(formData.amount_paid <= 0) {
-      setError(
-        t("yes") === "نعم"
-          ? "جب أن يكون المبلغ المدفوع رقمًا اكبر من 0"
-          : "Amount paid must be a positive number",
-      );
-      return;
-    }
-
-    // Check unique team code (if creating new)
-    if (!editingTeam) {
-      const exists = teams.some((t) => t.team_number === teamNum);
-      if (exists) {
-        setError(
-          t("yes") === "نعم"
-            ? "رمز الفريق مسجل بالفعل!"
-            : "Team code already exists!",
-        );
-        return;
-      }
-    }
-
     const payload = {
       ...formData,
       team_number: teamNum,
       amount_paid: Number(formData.amount_paid || 0),
     };
 
-    upsertTeam(payload);
-    const refreshedTeams = getTeams();
-    setTeams(refreshedTeams);
-    handleCancel(refreshedTeams);
+    const validation = validateTeam(payload, teams, Boolean(editingTeam));
+    if (!validation.valid) {
+      setError(validation.errors[0]);
+      return;
+    }
+
+    try {
+      await upsertTeam(payload);
+      const refreshedTeams = getTeams();
+      setTeams(refreshedTeams);
+      handleCancel(refreshedTeams);
+      toast(
+        t("yes") === "نعم" ? "تم حفظ الفريق بنجاح" : "Team saved successfully",
+        "success",
+      );
+    } catch (err) {
+      setError(err.message || "Failed to save team");
+    }
   };
 
   const handleDelete = (teamNumber) => {
     if (!isAdmin) return;
-    if (window.confirm(t("delete_confirm"))) {
-      deleteTeam(teamNumber);
-      setTeams(getTeams());
-    }
+    confirm(
+      t("delete_confirm"),
+      async () => {
+        try {
+          await deleteTeam(teamNumber);
+          setTeams(getTeams());
+          toast(
+            t("yes") === "نعم"
+              ? "تم حذف الفريق بنجاح"
+              : "Team deleted successfully",
+            "success",
+          );
+        } catch (err) {
+          toast(err.message || "Unable to delete team", "error");
+        }
+      },
+      { title: t("delete") || "Delete", variant: "danger" },
+    );
   };
 
   const showForm = isAdmin && (!settings.lock_tournament_day || editingTeam);

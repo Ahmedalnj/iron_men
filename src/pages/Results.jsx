@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getTeamResultsCalculated } from '../state';
+import { formatDurationLabel } from '../utils/timeHelpers';
 import { Trophy, Search, Filter, HelpCircle } from 'lucide-react';
-
-function secondsToTimeString(sec) {
-  if (sec === null || sec === undefined || sec === '') return '';
-  const s = Number(sec);
-  if (s >= 9999) return '9999s (DNF/DNS)';
-  const mins = Math.floor(s / 60);
-  const secs = Math.floor(s % 60);
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${mins}:${pad(secs)}`;
-}
 
 export default function Results({ t, syncTick }) {
   const [results, setResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
+  const isArabic = t('yes') === 'نعم';
 
   useEffect(() => {
     const loadResults = () => {
@@ -102,7 +94,7 @@ export default function Results({ t, syncTick }) {
               <th>{t('overall_rank')}</th>
               <th>{t('team_num')}</th>
               <th>{t('team_name')}</th>
-              <th>{t('leg_time').replace(' {n}', 's')}</th>
+              <th>{isArabic ? 'وقت اللاعبين' : 'Player Times'}</th>
               <th>{t('raw_time')}</th>
               <th>{t('penalty_sec')}</th>
               <th>{t('total_time')}</th>
@@ -149,24 +141,24 @@ export default function Results({ t, syncTick }) {
                           if (legTime === null || legTime === undefined || legTime === '') return null;
                           return (
                             <div key={num} className="number-text" style={{ background: 'rgba(255,255,255,0.03)', padding: '2px 4px', borderRadius: '4px' }}>
-                              L{num}: {secondsToTimeString(legTime)}
+                              L{num}: {formatDurationLabel(legTime, { locale: isArabic ? 'ar' : 'en' })}
                             </div>
                           );
                         })}
                       </div>
                     </td>
                     <td className="timer-text">
-                      {row.has_times ? secondsToTimeString(row.total_result_seconds - row.penalty_seconds) : '--:--'}
+                      {row.has_times ? formatDurationLabel(row.total_result_seconds - row.penalty_seconds, { locale: isArabic ? 'ar' : 'en' }) : '--:--'}
                     </td>
                     <td className="timer-text text-danger" style={{ fontWeight: 'bold' }}>
-                      {row.penalty_seconds > 0 ? `+${row.penalty_seconds}s` : '0s'}
+                      {row.penalty_seconds > 0 ? `+${formatDurationLabel(row.penalty_seconds, { locale: isArabic ? 'ar' : 'en' })}` : (isArabic ? '0 ثانية' : '0 seconds')}
                     </td>
                     <td>
                       {row.is_incomplete ? (
                         <span className="badge refunded">{row.result_status}</span>
                       ) : row.has_times ? (
                         <span className="timer-text" style={{ fontWeight: 800, color: 'var(--color-primary-hover)', fontSize: '1rem' }}>
-                          {secondsToTimeString(row.total_result_seconds)}
+                          {formatDurationLabel(row.total_result_seconds, { locale: isArabic ? 'ar' : 'en' })}
                         </span>
                       ) : (
                         <span style={{ color: '#9ca3af' }}>--:--</span>

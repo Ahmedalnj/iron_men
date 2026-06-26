@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { getOverallPlayerRanking } from '../state';
+import { formatDurationLabel } from '../utils/timeHelpers';
 import { Search } from 'lucide-react';
-
-function secondsToTimeString(sec) {
-  if (sec === null || sec === undefined || sec === '') return '';
-  const s = Number(sec);
-  const mins = Math.floor(s / 60);
-  const secs = Math.floor(s % 60);
-  const pad = (n) => String(n).padStart(2, '0');
-  return `${mins}:${pad(secs)}`;
-}
 
 export default function PlayerRanking({ t, syncTick }) {
   const [rankings, setRankings] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const isArabic = t('yes') === 'نعم';
 
   useEffect(() => {
     const loadRankings = () => {
@@ -94,13 +87,13 @@ export default function PlayerRanking({ t, syncTick }) {
                       </span>
                       {row.team_name}
                     </td>
-                    <td className="timer-text">{secondsToTimeString(row.raw_time_seconds)}</td>
+                    <td className="timer-text">{formatDurationLabel(row.raw_time_seconds, { locale: isArabic ? 'ar' : 'en' })}</td>
                     <td className="timer-text text-danger">
-                      {row.penalty_seconds > 0 ? `+${row.penalty_seconds}s` : '0s'}
+                      {row.penalty_seconds > 0 ? `+${formatDurationLabel(row.penalty_seconds, { locale: isArabic ? 'ar' : 'en' })}` : (isArabic ? '0 ثانية' : '0 seconds')}
                     </td>
                     <td>
                       <span className="timer-text" style={{ fontWeight: 800, color: 'var(--color-gold)', fontSize: '1rem' }}>
-                        {secondsToTimeString(row.final_time_seconds)}
+                        {formatDurationLabel(row.final_time_seconds, { locale: isArabic ? 'ar' : 'en' })}
                       </span>
                     </td>
                     <td>
