@@ -178,13 +178,12 @@ export default function Results({ t, syncTick }) {
                       {row.team_number}
                     </td>
                     <td style={{ fontWeight: 700 }}>{row.team_name}</td>
-                    <td style={{ fontSize: "0.8rem", maxWidth: "300px" }}>
-                      {/* Sub-grid with leg-by-leg details */}
+                    <td style={{ fontSize: "0.8rem", maxWidth: "320px" }}>
                       <div
                         style={{
                           display: "grid",
-                          gridTemplateColumns: "repeat(3, 1fr)",
-                          gap: "0.25rem",
+                          gap: "0.35rem",
+                          direction: isArabic ? "rtl" : "ltr",
                         }}
                       >
                         {[1, 2, 3, 4, 5, 6].map((num) => {
@@ -195,18 +194,39 @@ export default function Results({ t, syncTick }) {
                             legTime === ""
                           )
                             return null;
+
+                          const playerName =
+                            row.leg_players?.[`leg${num}_player_name`] ||
+                            (isArabic ? "لاعب غير معروف" : "Unknown Player");
+
                           return (
                             <div
                               key={num}
                               className="number-text"
                               style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                gap: "0.5rem",
                                 background: "rgba(255,255,255,0.03)",
-                                padding: "2px 4px",
+                                padding: "3px 6px",
                                 borderRadius: "4px",
+                                whiteSpace: "nowrap",
                               }}
                             >
-                              {isArabic ? `اللاعب رقم ${num}` : `Player ${num}`}
-                              : {formatTime(legTime)}
+                              <span style={{ flex: 1, textAlign: isArabic ? "right" : "left" }}>
+                                {playerName}
+                              </span>
+                              <span
+                                style={{
+                                  fontWeight: 700,
+                                  color: "var(--color-primary-hover)",
+                                  textAlign: isArabic ? "left" : "right",
+                                  minWidth: "70px",
+                                }}
+                              >
+                                {formatTime(legTime)}
+                              </span>
                             </div>
                           );
                         })}
