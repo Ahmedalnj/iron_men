@@ -214,7 +214,12 @@ export default function Results({ t, syncTick }) {
                                 whiteSpace: "nowrap",
                               }}
                             >
-                              <span style={{ flex: 1, textAlign: isArabic ? "right" : "left" }}>
+                              <span
+                                style={{
+                                  flex: 1,
+                                  textAlign: isArabic ? "right" : "left",
+                                }}
+                              >
                                 {playerName}
                               </span>
                               <span
