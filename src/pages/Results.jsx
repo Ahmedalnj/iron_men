@@ -206,8 +206,7 @@ export default function Results({ t, syncTick }) {
                               }}
                             >
                               {isArabic ? `اللاعب رقم ${num}` : `Player ${num}`}
-                              :{" "}
-                              {formatTime(legTime)}
+                              : {formatTime(legTime)}
                             </div>
                           );
                         })}
@@ -215,7 +214,9 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td className="timer-text">
                       {row.has_times
-                        ? formatTime(row.total_result_seconds - row.penalty_seconds)
+                        ? formatTime(
+                            row.total_result_seconds - row.penalty_seconds,
+                          )
                         : "00:00.00"}
                     </td>
                     <td

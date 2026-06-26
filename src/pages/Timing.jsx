@@ -577,7 +577,8 @@ export default function Timing({ t, role, syncTick }) {
                           color: "#6b7280",
                         }}
                       >
-                        {t("literal_time")}: {formatTime(liveTotals.totalResultSec)}
+                        {t("literal_time")}:{" "}
+                        {formatTime(liveTotals.totalResultSec)}
                       </span>
                     </div>
                   ) : (
