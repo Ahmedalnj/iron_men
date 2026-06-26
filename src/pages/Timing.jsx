@@ -23,7 +23,11 @@ const formatDuration = (totalSeconds, locale = "en", options = {}) => {
   const parts = [];
 
   if (minutes > 0) {
-    parts.push(isArabic ? `${minutes} دقيقة${minutes === 1 ? "" : ""}` : `${minutes} min`);
+    parts.push(
+      isArabic
+        ? `${minutes} دقيقة${minutes === 1 ? "" : ""}`
+        : `${minutes} min`,
+    );
   }
 
   if (remainderSeconds > 0 || parts.length === 0) {
@@ -598,7 +602,8 @@ export default function Timing({ t, role, syncTick }) {
                         className="badge refunded"
                         style={{ fontSize: "1rem", padding: "0.4rem 0.8rem" }}
                       >
-                        {timing.result_status} ({formatDuration(settings.dnf_dns_injury_value, locale)})
+                        {timing.result_status} (
+                        {formatDuration(settings.dnf_dns_injury_value, locale)})
                       </span>
                       <span
                         className="timer-text block mt-1"
@@ -608,7 +613,8 @@ export default function Timing({ t, role, syncTick }) {
                           color: "#6b7280",
                         }}
                       >
-                        {t("literal_time")}: {formatDuration(
+                        {t("literal_time")}:{" "}
+                        {formatDuration(
                           liveTotals.totalResultSec,
                           t("yes") === "نعم" ? "ar" : "en",
                         )}
@@ -624,7 +630,8 @@ export default function Timing({ t, role, syncTick }) {
                         textShadow: "0 0 10px var(--color-gold-glow)",
                       }}
                     >
-                      {formatDuration(liveTotals.totalResultSec, locale) || "--"}
+                      {formatDuration(liveTotals.totalResultSec, locale) ||
+                        "--"}
                     </span>
                   )}
                 </div>
