@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getOverallPlayerRanking } from "../state";
-import { formatDurationLabel } from "../utils/timeHelpers";
+import { formatTime } from "../utils/timeHelpers";
 import { Search } from "lucide-react";
 
 export default function PlayerRanking({ t, syncTick }) {
@@ -113,16 +113,12 @@ export default function PlayerRanking({ t, syncTick }) {
                       {row.team_name}
                     </td>
                     <td className="timer-text">
-                      {formatDurationLabel(row.raw_time_seconds, {
-                        locale: isArabic ? "ar" : "en",
-                      })}
+                      {formatTime(row.raw_time_seconds)}
                     </td>
                     <td className="timer-text text-danger">
                       {row.penalty_seconds > 0
-                        ? `+${formatDurationLabel(row.penalty_seconds, { locale: isArabic ? "ar" : "en" })}`
-                        : isArabic
-                          ? "0 ثانية"
-                          : "0 seconds"}
+                        ? `+${formatTime(row.penalty_seconds)}`
+                        : "00:00.00"}
                     </td>
                     <td>
                       <span
@@ -133,9 +129,7 @@ export default function PlayerRanking({ t, syncTick }) {
                           fontSize: "1rem",
                         }}
                       >
-                        {formatDurationLabel(row.final_time_seconds, {
-                          locale: isArabic ? "ar" : "en",
-                        })}
+                        {formatTime(row.final_time_seconds)}
                       </span>
                     </td>
                     <td>

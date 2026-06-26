@@ -218,14 +218,14 @@ export default function App() {
             </button>
           </div>
 
-          {/* <span className={`role-badge ${role}`}>🛡️ {t(role)}</span> */}
-          {/* <span
+          <span className={`role-badge ${role}`}>🛡️ {t(role)}</span>
+          {<span
             className={`role-badge ${isOnline ? "admin" : "viewer"}`}
             style={{ padding: "0.35rem 0.6rem" }}
           >
             {isOnline ? <Wifi size={14} /> : <WifiOff size={14} />}{" "}
             {isOnline ? "Online" : "Offline"}
-          </span> */}
+          </span>}
 
           <button
             className="btn btn-secondary"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getTeamResultsCalculated } from "../state";
-import { formatDurationLabel } from "../utils/timeHelpers";
+import { formatTime } from "../utils/timeHelpers";
 import { Trophy, Search, Filter, HelpCircle } from "lucide-react";
 
 export default function Results({ t, syncTick }) {
@@ -207,9 +207,7 @@ export default function Results({ t, syncTick }) {
                             >
                               {isArabic ? `اللاعب رقم ${num}` : `Player ${num}`}
                               :{" "}
-                              {formatDurationLabel(legTime, {
-                                locale: isArabic ? "ar" : "en",
-                              })}
+                              {formatTime(legTime)}
                             </div>
                           );
                         })}
@@ -217,21 +215,16 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td className="timer-text">
                       {row.has_times
-                        ? formatDurationLabel(
-                            row.total_result_seconds - row.penalty_seconds,
-                            { locale: isArabic ? "ar" : "en" },
-                          )
-                        : "--:--"}
+                        ? formatTime(row.total_result_seconds - row.penalty_seconds)
+                        : "00:00.00"}
                     </td>
                     <td
                       className="timer-text text-danger"
                       style={{ fontWeight: "bold" }}
                     >
                       {row.penalty_seconds > 0
-                        ? `+${formatDurationLabel(row.penalty_seconds, { locale: isArabic ? "ar" : "en" })}`
-                        : isArabic
-                          ? "0 ثانية"
-                          : "0 seconds"}
+                        ? `+${formatTime(row.penalty_seconds)}`
+                        : "00:00.00"}
                     </td>
                     <td>
                       {row.is_incomplete ? (
@@ -247,12 +240,10 @@ export default function Results({ t, syncTick }) {
                             fontSize: "1rem",
                           }}
                         >
-                          {formatDurationLabel(row.total_result_seconds, {
-                            locale: isArabic ? "ar" : "en",
-                          })}
+                          {formatTime(row.total_result_seconds)}
                         </span>
                       ) : (
-                        <span style={{ color: "#9ca3af" }}>--:--</span>
+                        <span style={{ color: "#9ca3af" }}>00:00.00</span>
                       )}
                     </td>
                     <td>

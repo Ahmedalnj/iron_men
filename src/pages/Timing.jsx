@@ -9,48 +9,16 @@ import {
 } from "../state";
 import { useAppContext } from "../context/AppContext";
 import { validateTiming } from "../utils/validation";
-import { secondsToTimeString, timeStringToSeconds } from "../utils/timeHelpers";
+import {
+  secondsToTimeString,
+  timeStringToSeconds,
+  formatTime,
+} from "../utils/timeHelpers";
 import { Save, AlertTriangle, ShieldCheck, CheckCircle2 } from "lucide-react";
-
-const formatDuration = (totalSeconds, locale = "en", options = {}) => {
-  const seconds = Number(totalSeconds);
-  if (!Number.isFinite(seconds)) return "";
-
-  const absSeconds = Math.abs(seconds);
-  const minutes = Math.floor(absSeconds / 60);
-  const remainderSeconds = absSeconds % 60;
-  const isArabic = locale === "ar";
-  const parts = [];
-
-  if (minutes > 0) {
-    parts.push(
-      isArabic
-        ? `${minutes} دقيقة${minutes === 1 ? "" : ""}`
-        : `${minutes} min`,
-    );
-  }
-
-  if (remainderSeconds > 0 || parts.length === 0) {
-    parts.push(
-      isArabic
-        ? `${remainderSeconds} ثانية${remainderSeconds === 1 ? "" : "ٍ"}`
-        : `${remainderSeconds} sec`,
-    );
-  }
-
-  const formatted = isArabic ? parts.join(" و") : parts.join(" ");
-  if (options.forceSign) {
-    if (seconds > 0) return `+${formatted}`;
-    if (seconds < 0) return `-${formatted}`;
-  }
-
-  return formatted;
-};
 
 export default function Timing({ t, role, syncTick }) {
   const { toast, confirm } = useAppContext();
   const canEdit = role === "admin" || role === "timekeeper";
-  const locale = t("yes") === "نعم" ? "ar" : "en";
 
   const [teams, setTeams] = useState([]);
   const [settings, setSettings] = useState({});
@@ -557,7 +525,7 @@ export default function Timing({ t, role, syncTick }) {
                   className="timer-text"
                   style={{ fontSize: "1.5rem", fontWeight: "bold" }}
                 >
-                  {formatDuration(liveTotals.rawSumSec, locale) || "--"}
+                  {formatTime(liveTotals.rawSumSec) || "00:00.00"}
                 </span>
               </div>
 
@@ -567,11 +535,7 @@ export default function Timing({ t, role, syncTick }) {
                   className="timer-text text-danger"
                   style={{ fontSize: "1.5rem", fontWeight: "bold" }}
                 >
-                  {formatDuration(
-                    liveTotals.penaltySec,
-                    t("yes") === "نعم" ? "ar" : "en",
-                    { forceSign: true },
-                  )}
+                  {formatTime(liveTotals.penaltySec, { forceSign: true })}
                 </span>
               </div>
 
@@ -603,7 +567,7 @@ export default function Timing({ t, role, syncTick }) {
                         style={{ fontSize: "1rem", padding: "0.4rem 0.8rem" }}
                       >
                         {timing.result_status} (
-                        {formatDuration(settings.dnf_dns_injury_value, locale)})
+                        {formatTime(settings.dnf_dns_injury_value)})
                       </span>
                       <span
                         className="timer-text block mt-1"
@@ -613,11 +577,7 @@ export default function Timing({ t, role, syncTick }) {
                           color: "#6b7280",
                         }}
                       >
-                        {t("literal_time")}:{" "}
-                        {formatDuration(
-                          liveTotals.totalResultSec,
-                          t("yes") === "نعم" ? "ar" : "en",
-                        )}
+                        {t("literal_time")}: {formatTime(liveTotals.totalResultSec)}
                       </span>
                     </div>
                   ) : (
@@ -630,8 +590,7 @@ export default function Timing({ t, role, syncTick }) {
                         textShadow: "0 0 10px var(--color-gold-glow)",
                       }}
                     >
-                      {formatDuration(liveTotals.totalResultSec, locale) ||
-                        "--"}
+                      {formatTime(liveTotals.totalResultSec) || "00:00.00"}
                     </span>
                   )}
                 </div>

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getLiveLeaderboard } from "../state";
-import { formatDurationLabel, formatGapLabel } from "../utils/timeHelpers";
+import { formatTime } from "../utils/timeHelpers";
 import { Monitor, X, Clock, Award } from "lucide-react";
 
 export default function Leaderboard({ t, syncTick }) {
   const [leaderboard, setLeaderboard] = useState([]);
   const [projectorMode, setProjectorMode] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const isArabic = t("yes") === "نعم";
 
   const loadLeaderboard = () => {
     setLeaderboard(getLiveLeaderboard());
@@ -132,9 +131,7 @@ export default function Leaderboard({ t, syncTick }) {
                   className="timer-text"
                   style={{ fontSize: "1.2rem", color: "#94a3b8" }}
                 >
-                  {formatDurationLabel(top3[1].total_result_seconds, {
-                    locale: isArabic ? "ar" : "en",
-                  })}
+                  {formatTime(top3[1].total_result_seconds)}
                 </span>
                 <div
                   style={{
@@ -213,9 +210,7 @@ export default function Leaderboard({ t, syncTick }) {
                     fontWeight: 800,
                   }}
                 >
-                  {formatDurationLabel(top3[0].total_result_seconds, {
-                    locale: isArabic ? "ar" : "en",
-                  })}
+                  {formatTime(top3[0].total_result_seconds)}
                 </span>
                 <div
                   style={{
@@ -277,9 +272,7 @@ export default function Leaderboard({ t, syncTick }) {
                   className="timer-text"
                   style={{ fontSize: "1.2rem", color: "#b45309" }}
                 >
-                  {formatDurationLabel(top3[2].total_result_seconds, {
-                    locale: isArabic ? "ar" : "en",
-                  })}
+                  {formatTime(top3[2].total_result_seconds)}
                 </span>
                 <div
                   style={{
@@ -366,9 +359,7 @@ export default function Leaderboard({ t, syncTick }) {
                       </td>
                       <td className="timer-text" style={{ color: "#f87171" }}>
                         {team.gap_to_first > 0
-                          ? formatGapLabel(team.gap_to_first, {
-                              locale: isArabic ? "ar" : "en",
-                            })
+                          ? formatTime(team.gap_to_first, { forceSign: true })
                           : team.gap_to_first === 0
                             ? "—"
                             : ""}
@@ -386,9 +377,7 @@ export default function Leaderboard({ t, syncTick }) {
                                 team.rank === 1 ? "var(--color-gold)" : "#fff",
                             }}
                           >
-                            {formatDurationLabel(team.total_result_seconds, {
-                              locale: isArabic ? "ar" : "en",
-                            })}
+                            {formatTime(team.total_result_seconds)}
                           </span>
                         )}
                       </td>
@@ -486,9 +475,7 @@ export default function Leaderboard({ t, syncTick }) {
                   color: idx === 0 ? "var(--color-gold)" : "#fff",
                 }}
               >
-                {formatDurationLabel(team.total_result_seconds, {
-                  locale: isArabic ? "ar" : "en",
-                })}
+                {formatTime(team.total_result_seconds)}
               </div>
             </div>
           ))}
@@ -541,9 +528,7 @@ export default function Leaderboard({ t, syncTick }) {
                   <td style={{ fontWeight: 700 }}>{team.team_name}</td>
                   <td className="timer-text" style={{ color: "#f87171" }}>
                     {team.gap_to_first > 0
-                      ? formatGapLabel(team.gap_to_first, {
-                          locale: isArabic ? "ar" : "en",
-                        })
+                      ? formatTime(team.gap_to_first, { forceSign: true })
                       : team.gap_to_first === 0
                         ? "—"
                         : ""}
@@ -561,9 +546,7 @@ export default function Leaderboard({ t, syncTick }) {
                           color: "var(--color-primary-hover)",
                         }}
                       >
-                        {formatDurationLabel(team.total_result_seconds, {
-                          locale: isArabic ? "ar" : "en",
-                        })}
+                        {formatTime(team.total_result_seconds)}
                       </span>
                     )}
                   </td>
