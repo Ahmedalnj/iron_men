@@ -49,9 +49,13 @@ export default function Results({ t, syncTick }) {
     return matchesSearch && matchesStatus;
   });
 
-  const finishedCount = results.filter((row) => row.result_status === "Finished").length;
+  const finishedCount = results.filter(
+    (row) => row.result_status === "Finished",
+  ).length;
   const incompleteCount = results.filter((row) => row.is_incomplete).length;
-  const pendingCount = results.filter((row) => row.result_status === "Pending").length;
+  const pendingCount = results.filter(
+    (row) => row.result_status === "Pending",
+  ).length;
 
   return (
     <div className="results-page">
@@ -141,7 +145,9 @@ export default function Results({ t, syncTick }) {
             {filtered.length === 0 ? (
               <tr>
                 <td colSpan={8} className="results-empty-state">
-                  {isArabic ? "لا توجد نتائج مطابقة لبحثك." : "No matching results found."}
+                  {isArabic
+                    ? "لا توجد نتائج مطابقة لبحثك."
+                    : "No matching results found."}
                 </td>
               </tr>
             ) : (
@@ -172,10 +178,17 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td style={{ fontWeight: 700 }}>{row.team_name}</td>
                     <td style={{ fontSize: "0.8rem", maxWidth: "320px" }}>
-                      <div className="results-player-list" style={{ direction: isArabic ? "rtl" : "ltr" }}>
+                      <div
+                        className="results-player-list"
+                        style={{ direction: isArabic ? "rtl" : "ltr" }}
+                      >
                         {[1, 2, 3, 4, 5, 6].map((num) => {
                           const legTime = row.timing[`leg${num}_time`];
-                          if (legTime === null || legTime === undefined || legTime === "") {
+                          if (
+                            legTime === null ||
+                            legTime === undefined ||
+                            legTime === ""
+                          ) {
                             return null;
                           }
 
@@ -194,17 +207,24 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td className="timer-text">
                       {row.has_times
-                        ? formatTime(row.total_result_seconds - row.penalty_seconds)
+                        ? formatTime(
+                            row.total_result_seconds - row.penalty_seconds,
+                          )
                         : "00:00.00"}
                     </td>
-                    <td className="timer-text text-danger" style={{ fontWeight: "bold" }}>
+                    <td
+                      className="timer-text text-danger"
+                      style={{ fontWeight: "bold" }}
+                    >
                       {row.penalty_seconds > 0
                         ? `+${formatTime(row.penalty_seconds)}`
                         : "00:00.00"}
                     </td>
                     <td>
                       {row.is_incomplete ? (
-                        <span className="badge refunded">{row.result_status}</span>
+                        <span className="badge refunded">
+                          {row.result_status}
+                        </span>
                       ) : row.has_times ? (
                         <span
                           className="timer-text"
@@ -221,7 +241,9 @@ export default function Results({ t, syncTick }) {
                       )}
                     </td>
                     <td>
-                      <span className={`badge ${row.result_status.toLowerCase()}`}>
+                      <span
+                        className={`badge ${row.result_status.toLowerCase()}`}
+                      >
                         {t(row.result_status) || row.result_status}
                       </span>
                     </td>

@@ -24,8 +24,12 @@ export default function PlayerRanking({ t, syncTick }) {
       p.player_key.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const finishedCount = rankings.filter((row) => row.status === "Finished").length;
-  const pendingCount = rankings.filter((row) => row.status === "Pending").length;
+  const finishedCount = rankings.filter(
+    (row) => row.status === "Finished",
+  ).length;
+  const pendingCount = rankings.filter(
+    (row) => row.status === "Pending",
+  ).length;
 
   return (
     <div className="results-page">
@@ -36,7 +40,11 @@ export default function PlayerRanking({ t, syncTick }) {
             {isArabic ? "جدول النتائج الفردية" : "Individual results report"}
           </p>
         </div>
-        <button type="button" className="results-print-button" onClick={() => window.print()}>
+        <button
+          type="button"
+          className="results-print-button"
+          onClick={() => window.print()}
+        >
           {isArabic ? "طباعة / PDF" : "Print / PDF"}
         </button>
       </div>
@@ -124,7 +132,9 @@ export default function PlayerRanking({ t, syncTick }) {
                       </span>
                       {row.team_name}
                     </td>
-                    <td className="timer-text">{formatTime(row.raw_time_seconds)}</td>
+                    <td className="timer-text">
+                      {formatTime(row.raw_time_seconds)}
+                    </td>
                     <td className="timer-text text-danger">
                       {row.penalty_seconds > 0
                         ? `+${formatTime(row.penalty_seconds)}`
