@@ -1,5 +1,5 @@
-import { supabase, safeSupabaseCall } from '../lib/supabaseClient.js';
-import { cache, fetchAllFromSupabase } from './cache.js';
+import { supabase, safeSupabaseCall } from "../lib/supabaseClient.js";
+import { cache, fetchAllFromSupabase } from "./cache.js";
 
 export function getSettings() {
   return cache.settings;
@@ -13,29 +13,29 @@ export async function updateSettings(settings) {
   } else {
     payload = { ...current, ...settings };
   }
-  
+
   cache.settings = payload;
-  
+
   const { error } = await safeSupabaseCall(
-    supabase.from('settings').upsert(payload),
-    'Update settings'
+    supabase.from("settings").upsert(payload),
+    "Update settings",
   );
   if (error) throw new Error(error);
-  
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('state-updated'));
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("state-updated"));
   }
 }
 
 export function getTeams() {
-  return cache.teams.map(t => {
-    let status = 'Pending';
-    if (t.payment_status === 'Paid' || t.payment_status === 'Waived') {
-      status = 'Approved';
+  return cache.teams.map((t) => {
+    let status = "Pending";
+    if (t.payment_status === "Paid" || t.payment_status === "Waived") {
+      status = "Approved";
     }
     return {
       ...t,
-      team_status: status
+      team_status: status,
     };
   });
 }
@@ -48,8 +48,10 @@ export async function upsertTeam(team) {
 
   const payload = { ...team };
   delete payload.team_status;
-  
-  const index = cache.teams.findIndex(t => t.team_number === payload.team_number);
+
+  const index = cache.teams.findIndex(
+    (t) => t.team_number === payload.team_number,
+  );
   if (index >= 0) {
     cache.teams[index] = { ...cache.teams[index], ...payload };
   } else {
@@ -57,8 +59,8 @@ export async function upsertTeam(team) {
   }
 
   const { error } = await safeSupabaseCall(
-    supabase.from('teams').upsert(payload),
-    'Upsert team'
+    supabase.from("teams").upsert(payload),
+    "Upsert team",
   );
   if (error) {
     // Revert local cache on failure
@@ -66,8 +68,8 @@ export async function upsertTeam(team) {
     throw new Error(error);
   }
 
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('state-updated'));
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("state-updated"));
   }
 }
 
@@ -76,25 +78,25 @@ export async function deleteTeam(teamNumber) {
   if (settings.lock_tournament_day) {
     throw new Error("Tournament is locked. No changes allowed.");
   }
-  
+
   // Optimistic updates
   const originalTeams = [...cache.teams];
   const originalPlayers = [...cache.players];
   const originalCheckins = [...cache.checkins];
   const originalTiming = [...cache.timing];
 
-  cache.teams = cache.teams.filter(t => t.team_number !== teamNumber);
-  cache.players = cache.players.filter(p => p.team_number !== teamNumber);
-  cache.checkins = cache.checkins.filter(c => c.team_number !== teamNumber);
-  cache.timing = cache.timing.filter(t => t.team_number !== teamNumber);
-  
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('state-updated'));
+  cache.teams = cache.teams.filter((t) => t.team_number !== teamNumber);
+  cache.players = cache.players.filter((p) => p.team_number !== teamNumber);
+  cache.checkins = cache.checkins.filter((c) => c.team_number !== teamNumber);
+  cache.timing = cache.timing.filter((t) => t.team_number !== teamNumber);
+
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("state-updated"));
   }
 
   const { error } = await safeSupabaseCall(
-    supabase.from('teams').delete().eq('team_number', teamNumber),
-    'Delete team'
+    supabase.from("teams").delete().eq("team_number", teamNumber),
+    "Delete team",
   );
 
   if (error) {
@@ -103,8 +105,8 @@ export async function deleteTeam(teamNumber) {
     cache.players = originalPlayers;
     cache.checkins = originalCheckins;
     cache.timing = originalTiming;
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('state-updated'));
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("state-updated"));
     }
     throw new Error(error);
   }
