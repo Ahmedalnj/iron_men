@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getTeamResultsCalculated } from "../state";
 import { formatTime } from "../utils/timeHelpers";
-import { Trophy, Search, Filter, HelpCircle } from "lucide-react";
 
 export default function Results({ t, syncTick }) {
   const [results, setResults] = useState([]);
@@ -13,7 +12,6 @@ export default function Results({ t, syncTick }) {
     const loadResults = () => {
       const data = getTeamResultsCalculated();
 
-      // Sort by ranking time. Incomplete runs (9999) go to bottom. Unrecorded (null) go lower.
       data.sort((a, b) => {
         if (a.ranking_time_seconds === null && b.ranking_time_seconds === null)
           return 0;
@@ -34,7 +32,6 @@ export default function Results({ t, syncTick }) {
     return () => clearInterval(interval);
   }, [syncTick]);
 
-  // Filtered list
   const filtered = results.filter((row) => {
     const matchesSearch =
       row.team_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -52,77 +49,80 @@ export default function Results({ t, syncTick }) {
     return matchesSearch && matchesStatus;
   });
 
-  return (
-    <div>
-      <h1 className="mb-4" style={{ fontSize: "1.8rem", fontWeight: 800 }}>
-        {t("results")}
-      </h1>
+  const finishedCount = results.filter((row) => row.result_status === "Finished").length;
+  const incompleteCount = results.filter((row) => row.is_incomplete).length;
+  const pendingCount = results.filter((row) => row.result_status === "Pending").length;
 
-      {/* Filters Card */}
-      <div
-        className="card"
-        style={{
-          padding: "1rem",
-          display: "flex",
-          gap: "1rem",
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: "0.5rem",
-            alignItems: "center",
-            flex: "1",
-            minWidth: "240px",
-          }}
+  return (
+    <div className="results-page">
+      <div className="results-report-header card">
+        <div>
+          <h1 className="results-report-title">{t("results")}</h1>
+          <p className="results-report-subtitle">
+            {isArabic ? "جدول النتائج النهائي" : "Final standings report"}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="results-print-button"
+          onClick={() => window.print()}
         >
-          <Search size={18} style={{ color: "#9ca3af" }} />
+          {isArabic ? "طباعة / PDF" : "Print / PDF"}
+        </button>
+      </div>
+
+      <div className="results-summary card">
+        <div className="results-summary__item">
+          <span>{isArabic ? "إجمالي الفرق" : "Total teams"}</span>
+          <strong>{results.length}</strong>
+        </div>
+        <div className="results-summary__item">
+          <span>{isArabic ? "منتهية" : "Finished"}</span>
+          <strong>{finishedCount}</strong>
+        </div>
+        <div className="results-summary__item">
+          <span>{isArabic ? "غير مكتملة" : "Incomplete"}</span>
+          <strong>{incompleteCount}</strong>
+        </div>
+        <div className="results-summary__item">
+          <span>{isArabic ? "قيد الانتظار" : "Pending"}</span>
+          <strong>{pendingCount}</strong>
+        </div>
+      </div>
+
+      <div className="results-controls card">
+        <div className="results-controls__field">
           <input
             type="text"
             className="form-input"
-            style={{ width: "100%" }}
             placeholder={t("search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            gap: "0.5rem",
-            alignItems: "center",
-            minWidth: "200px",
-          }}
-        >
-          <Filter size={18} style={{ color: "#9ca3af" }} />
+        <div className="results-controls__field">
           <select
             className="form-select"
-            style={{ width: "100%" }}
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
             <option value="ALL">
-              {t("yes") === "نعم" ? "كل النتائج" : "All Standings"}
+              {isArabic ? "كل النتائج" : "All Standings"}
             </option>
             <option value="FINISHED">
-              {t("yes") === "نعم" ? "منتهي فقط" : "Finished Only"}
+              {isArabic ? "منتهي فقط" : "Finished Only"}
             </option>
             <option value="INCOMPLETE">
-              {t("yes") === "نعم"
-                ? "غير مكتمل (DNF/DNS)"
-                : "Incomplete (DNF/DNS)"}
+              {isArabic ? "غير مكتمل (DNF/DNS)" : "Incomplete (DNF/DNS)"}
             </option>
             <option value="PENDING">
-              {t("yes") === "نعم" ? "قيد الانتظار" : "Pending Only"}
+              {isArabic ? "قيد الانتظار" : "Pending Only"}
             </option>
           </select>
         </div>
       </div>
 
-      {/* Results Standings table */}
       <div className="table-container">
         <table className="custom-table">
           <thead>
@@ -140,19 +140,12 @@ export default function Results({ t, syncTick }) {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td
-                  colSpan={8}
-                  style={{ textAlign: "center", padding: "2rem" }}
-                >
-                  {t("yes") === "نعم"
-                    ? "لا توجد نتائج مطابقة لبحثك."
-                    : "No matching results found."}
+                <td colSpan={8} className="results-empty-state">
+                  {isArabic ? "لا توجد نتائج مطابقة لبحثك." : "No matching results found."}
                 </td>
               </tr>
             ) : (
               filtered.map((row, index) => {
-                // Determine live rank index for completed runs.
-                // Runs with null timing or incomplete shouldn't show podium icons, but let's calculate rank cleanly.
                 const hasTime = row.has_times && !row.is_incomplete;
                 const rankNum = hasTime ? index + 1 : null;
 
@@ -179,59 +172,21 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td style={{ fontWeight: 700 }}>{row.team_name}</td>
                     <td style={{ fontSize: "0.8rem", maxWidth: "320px" }}>
-                      <div
-                        style={{
-                          display: "grid",
-                          gap: "0.35rem",
-                          direction: isArabic ? "rtl" : "ltr",
-                        }}
-                      >
+                      <div className="results-player-list" style={{ direction: isArabic ? "rtl" : "ltr" }}>
                         {[1, 2, 3, 4, 5, 6].map((num) => {
                           const legTime = row.timing[`leg${num}_time`];
-                          if (
-                            legTime === null ||
-                            legTime === undefined ||
-                            legTime === ""
-                          )
+                          if (legTime === null || legTime === undefined || legTime === "") {
                             return null;
+                          }
 
                           const playerName =
                             row.leg_players?.[`leg${num}_player_name`] ||
                             (isArabic ? "لاعب غير معروف" : "Unknown Player");
 
                           return (
-                            <div
-                              key={num}
-                              className="number-text"
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                gap: "0.5rem",
-                                background: "rgba(255,255,255,0.03)",
-                                padding: "3px 6px",
-                                borderRadius: "4px",
-                                whiteSpace: "nowrap",
-                              }}
-                            >
-                              <span
-                                style={{
-                                  flex: 1,
-                                  textAlign: isArabic ? "right" : "left",
-                                }}
-                              >
-                                {playerName}
-                              </span>
-                              <span
-                                style={{
-                                  fontWeight: 700,
-                                  color: "var(--color-primary-hover)",
-                                  textAlign: isArabic ? "left" : "right",
-                                  minWidth: "70px",
-                                }}
-                              >
-                                {formatTime(legTime)}
-                              </span>
+                            <div key={num} className="results-player-item">
+                              <span>{playerName}</span>
+                              <span>{formatTime(legTime)}</span>
                             </div>
                           );
                         })}
@@ -239,24 +194,17 @@ export default function Results({ t, syncTick }) {
                     </td>
                     <td className="timer-text">
                       {row.has_times
-                        ? formatTime(
-                            row.total_result_seconds - row.penalty_seconds,
-                          )
+                        ? formatTime(row.total_result_seconds - row.penalty_seconds)
                         : "00:00.00"}
                     </td>
-                    <td
-                      className="timer-text text-danger"
-                      style={{ fontWeight: "bold" }}
-                    >
+                    <td className="timer-text text-danger" style={{ fontWeight: "bold" }}>
                       {row.penalty_seconds > 0
                         ? `+${formatTime(row.penalty_seconds)}`
                         : "00:00.00"}
                     </td>
                     <td>
                       {row.is_incomplete ? (
-                        <span className="badge refunded">
-                          {row.result_status}
-                        </span>
+                        <span className="badge refunded">{row.result_status}</span>
                       ) : row.has_times ? (
                         <span
                           className="timer-text"
@@ -273,9 +221,7 @@ export default function Results({ t, syncTick }) {
                       )}
                     </td>
                     <td>
-                      <span
-                        className={`badge ${row.result_status.toLowerCase()}`}
-                      >
+                      <span className={`badge ${row.result_status.toLowerCase()}`}>
                         {t(row.result_status) || row.result_status}
                       </span>
                     </td>
@@ -285,19 +231,6 @@ export default function Results({ t, syncTick }) {
             )}
           </tbody>
         </table>
-      </div>
-
-      {/* Summary Card for Judges / Timekeepers */}
-      <div className="card">
-        <h3 className="card-title mb-2">
-          ⚖️ ملاحظات التحكيم والميقاتي / Officiating Notes
-        </h3>
-        <p style={{ fontSize: "0.85rem", color: "#9ca3af", lineHeight: "1.5" }}>
-          *{" "}
-          {t("yes") === "نعم"
-            ? "الفرق التي تسجل حالات DNS (لم يبدأ) أو DNF (لم ينهِ) أو إصابة يتم استبعادها من الترتيب التنافسي المباشر وتثبيتها بقيمة زمنية جزائية قدرها 9999 ثانية لدفعها لآخر الجدول."
-            : "Teams recording DNF, DNS, or Injured status are automatically pushed to the bottom of the scoreboard using the 9999s penalty sentinel value to preserve the competitive ranking structure."}
-        </p>
       </div>
     </div>
   );

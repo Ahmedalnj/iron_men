@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getOverallPlayerRanking } from "../state";
 import { formatTime } from "../utils/timeHelpers";
-import { Search } from "lucide-react";
 
 export default function PlayerRanking({ t, syncTick }) {
   const [rankings, setRankings] = useState([]);
@@ -25,34 +24,50 @@ export default function PlayerRanking({ t, syncTick }) {
       p.player_key.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  return (
-    <div>
-      <h1 className="mb-4" style={{ fontSize: "1.8rem", fontWeight: 800 }}>
-        {t("player_rank_title")}
-      </h1>
+  const finishedCount = rankings.filter((row) => row.status === "Finished").length;
+  const pendingCount = rankings.filter((row) => row.status === "Pending").length;
 
-      {/* Search Header */}
-      <div
-        className="card"
-        style={{
-          padding: "1rem",
-          display: "flex",
-          gap: "0.5rem",
-          alignItems: "center",
-        }}
-      >
-        <Search size={18} style={{ color: "#9ca3af" }} />
-        <input
-          type="text"
-          className="form-input"
-          style={{ width: "100%" }}
-          placeholder={t("search").replace("فريق", "لاعب")}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+  return (
+    <div className="results-page">
+      <div className="results-report-header card">
+        <div>
+          <h1 className="results-report-title">{t("player_rank_title")}</h1>
+          <p className="results-report-subtitle">
+            {isArabic ? "جدول النتائج الفردية" : "Individual results report"}
+          </p>
+        </div>
+        <button type="button" className="results-print-button" onClick={() => window.print()}>
+          {isArabic ? "طباعة / PDF" : "Print / PDF"}
+        </button>
       </div>
 
-      {/* Rankings Table */}
+      <div className="results-summary card">
+        <div className="results-summary__item">
+          <span>{isArabic ? "إجمالي المتسابقين" : "Total competitors"}</span>
+          <strong>{rankings.length}</strong>
+        </div>
+        <div className="results-summary__item">
+          <span>{isArabic ? "منتهية" : "Finished"}</span>
+          <strong>{finishedCount}</strong>
+        </div>
+        <div className="results-summary__item">
+          <span>{isArabic ? "قيد الانتظار" : "Pending"}</span>
+          <strong>{pendingCount}</strong>
+        </div>
+      </div>
+
+      <div className="results-controls card">
+        <div className="results-controls__field">
+          <input
+            type="text"
+            className="form-input"
+            placeholder={t("search").replace("فريق", "لاعب")}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className="table-container">
         <table className="custom-table">
           <thead>
@@ -70,10 +85,7 @@ export default function PlayerRanking({ t, syncTick }) {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td
-                  colSpan={8}
-                  style={{ textAlign: "center", padding: "2rem" }}
-                >
+                <td colSpan={8} className="results-empty-state">
                   {t("yes") === "نعم"
                     ? "لا توجد نتائج مطابقة لمنافسين."
                     : "No competitor rankings recorded yet."}
@@ -112,9 +124,7 @@ export default function PlayerRanking({ t, syncTick }) {
                       </span>
                       {row.team_name}
                     </td>
-                    <td className="timer-text">
-                      {formatTime(row.raw_time_seconds)}
-                    </td>
+                    <td className="timer-text">{formatTime(row.raw_time_seconds)}</td>
                     <td className="timer-text text-danger">
                       {row.penalty_seconds > 0
                         ? `+${formatTime(row.penalty_seconds)}`
