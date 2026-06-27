@@ -1,6 +1,22 @@
 import { cache, emitStateChange, getSettings } from "./cache";
 import { supabase, handleSupabaseError } from "../lib/supabaseClient";
 
+function normalizeTimingScalar(val) {
+  if (val === null || val === undefined || val === "") return null;
+
+  const numericValue = Number(val);
+  if (!Number.isFinite(numericValue)) return null;
+
+  return numericValue;
+}
+
+function normalizeTimingScalarForStorage(val) {
+  const numericValue = normalizeTimingScalar(val);
+  if (numericValue === null) return null;
+
+  return Math.round(numericValue);
+}
+
 export function getTimingEntries() {
   return cache.timing;
 }
@@ -34,15 +50,49 @@ export function getTimingEntryByTeam(teamNumber) {
 export async function upsertTimingEntry(entry) {
   const cleaned = {
     ...entry,
-    barriers_knocked: Number(entry.barriers_knocked || 0),
-    obstacles_skipped: Number(entry.obstacles_skipped || 0),
-    outside_help_count: Number(entry.outside_help_count || 0),
-    player1_penalty_sec: Number(entry.player1_penalty_sec || 0),
-    player2_penalty_sec: Number(entry.player2_penalty_sec || 0),
-    player3_penalty_sec: Number(entry.player3_penalty_sec || 0),
-    player4_penalty_sec: Number(entry.player4_penalty_sec || 0),
-    player5_penalty_sec: Number(entry.player5_penalty_sec || 0),
-    player6_penalty_sec: Number(entry.player6_penalty_sec || 0),
+    leg1_time: normalizeTimingScalar(entry.leg1_time),
+    leg2_time: normalizeTimingScalar(entry.leg2_time),
+    leg3_time: normalizeTimingScalar(entry.leg3_time),
+    leg4_time: normalizeTimingScalar(entry.leg4_time),
+    leg5_time: normalizeTimingScalar(entry.leg5_time),
+    leg6_time: normalizeTimingScalar(entry.leg6_time),
+    barriers_knocked: normalizeTimingScalar(entry.barriers_knocked) ?? 0,
+    obstacles_skipped: normalizeTimingScalar(entry.obstacles_skipped) ?? 0,
+    outside_help_count: normalizeTimingScalar(entry.outside_help_count) ?? 0,
+    player1_penalty_sec: normalizeTimingScalar(entry.player1_penalty_sec) ?? 0,
+    player2_penalty_sec: normalizeTimingScalar(entry.player2_penalty_sec) ?? 0,
+    player3_penalty_sec: normalizeTimingScalar(entry.player3_penalty_sec) ?? 0,
+    player4_penalty_sec: normalizeTimingScalar(entry.player4_penalty_sec) ?? 0,
+    player5_penalty_sec: normalizeTimingScalar(entry.player5_penalty_sec) ?? 0,
+    player6_penalty_sec: normalizeTimingScalar(entry.player6_penalty_sec) ?? 0,
+  };
+
+  const persisted = {
+    ...cleaned,
+    leg1_time: normalizeTimingScalarForStorage(cleaned.leg1_time),
+    leg2_time: normalizeTimingScalarForStorage(cleaned.leg2_time),
+    leg3_time: normalizeTimingScalarForStorage(cleaned.leg3_time),
+    leg4_time: normalizeTimingScalarForStorage(cleaned.leg4_time),
+    leg5_time: normalizeTimingScalarForStorage(cleaned.leg5_time),
+    leg6_time: normalizeTimingScalarForStorage(cleaned.leg6_time),
+    barriers_knocked:
+      normalizeTimingScalarForStorage(cleaned.barriers_knocked) ?? 0,
+    obstacles_skipped:
+      normalizeTimingScalarForStorage(cleaned.obstacles_skipped) ?? 0,
+    outside_help_count:
+      normalizeTimingScalarForStorage(cleaned.outside_help_count) ?? 0,
+    player1_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player1_penalty_sec) ?? 0,
+    player2_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player2_penalty_sec) ?? 0,
+    player3_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player3_penalty_sec) ?? 0,
+    player4_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player4_penalty_sec) ?? 0,
+    player5_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player5_penalty_sec) ?? 0,
+    player6_penalty_sec:
+      normalizeTimingScalarForStorage(cleaned.player6_penalty_sec) ?? 0,
   };
 
   const index = cache.timing.findIndex(
@@ -55,7 +105,7 @@ export async function upsertTimingEntry(entry) {
   }
 
   handleSupabaseError(
-    await supabase.from("timing").upsert(cleaned),
+    await supabase.from("timing").upsert(persisted),
     "upsert timing",
   );
   emitStateChange();

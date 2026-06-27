@@ -135,6 +135,17 @@ export default function Timing({ t, role, syncTick }) {
       return;
     }
 
+    const selectedTeamExists = teams.some(
+      (team) => team.team_number === selectedTeam,
+    );
+    if (!selectedTeamExists) {
+      setError(
+        t("team_not_found") ||
+          "Please select a valid team before saving timing.",
+      );
+      return;
+    }
+
     const savedEntry = {
       ...timing,
       team_number: selectedTeam,

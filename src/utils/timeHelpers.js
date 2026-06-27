@@ -18,14 +18,16 @@ export function timeStringToSeconds(val) {
   if (parts.length === 2) {
     const mins = parseInt(parts[0], 10) || 0;
     const secs = parseFloat(parts[1]) || 0;
-    return mins * 60 + secs;
+    return Math.round(mins * 60 + secs);
   } else if (parts.length === 3) {
     const hrs = parseInt(parts[0], 10) || 0;
     const mins = parseInt(parts[1], 10) || 0;
     const secs = parseFloat(parts[2]) || 0;
-    return hrs * 3600 + mins * 60 + secs;
+    return Math.round(hrs * 3600 + mins * 60 + secs);
   }
-  return parseFloat(val) || null;
+
+  const parsed = parseFloat(val);
+  return Number.isFinite(parsed) ? Math.round(parsed) : null;
 }
 
 /**
