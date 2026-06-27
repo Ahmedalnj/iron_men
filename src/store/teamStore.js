@@ -45,16 +45,19 @@ export async function upsertTeam(team) {
   if (settings.lock_tournament_day) {
     throw new Error("Tournament is locked. No changes allowed.");
   }
+
+  const payload = { ...team };
+  delete payload.team_status;
   
-  const index = cache.teams.findIndex(t => t.team_number === team.team_number);
+  const index = cache.teams.findIndex(t => t.team_number === payload.team_number);
   if (index >= 0) {
-    cache.teams[index] = { ...cache.teams[index], ...team };
+    cache.teams[index] = { ...cache.teams[index], ...payload };
   } else {
-    cache.teams.push(team);
+    cache.teams.push(payload);
   }
 
   const { error } = await safeSupabaseCall(
-    supabase.from('teams').upsert(team),
+    supabase.from('teams').upsert(payload),
     'Upsert team'
   );
   if (error) {

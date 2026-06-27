@@ -71,8 +71,9 @@ export default function Teams({ t, role, syncTick }) {
 
   const handleEditClick = (team) => {
     if (!isAdmin) return;
+    const { team_status, ...teamFields } = team;
     setEditingTeam(team.team_number);
-    setFormData({ ...team });
+    setFormData({ ...teamFields });
     setError("");
   };
 
