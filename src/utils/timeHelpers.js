@@ -18,16 +18,16 @@ export function timeStringToSeconds(val) {
   if (parts.length === 2) {
     const mins = parseInt(parts[0], 10) || 0;
     const secs = parseFloat(parts[1]) || 0;
-    return Math.round(mins * 60 + secs);
+    return mins * 60 + secs;
   } else if (parts.length === 3) {
     const hrs = parseInt(parts[0], 10) || 0;
     const mins = parseInt(parts[1], 10) || 0;
     const secs = parseFloat(parts[2]) || 0;
-    return Math.round(hrs * 3600 + mins * 60 + secs);
+    return hrs * 3600 + mins * 60 + secs;
   }
 
   const parsed = parseFloat(val);
-  return Number.isFinite(parsed) ? Math.round(parsed) : null;
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 /**
@@ -53,10 +53,19 @@ export function formatTime(sec, { forceSign = false } = {}) {
 
   const isNegative = totalSeconds < 0;
   const absSeconds = Math.abs(totalSeconds);
-  const minutes = Math.floor(absSeconds / 60);
-  const seconds = Math.floor(absSeconds % 60);
-  const centiseconds = Math.floor((absSeconds % 1) * 100);
+  let minutes = Math.floor(absSeconds / 60);
+  let seconds = Math.floor(absSeconds % 60);
+  let centiseconds = Math.round((absSeconds % 1) * 100);
   const sign = isNegative ? "-" : forceSign ? "+" : "";
+
+  if (centiseconds >= 100) {
+    centiseconds -= 100;
+    seconds += 1;
+  }
+  if (seconds >= 60) {
+    seconds -= 60;
+    minutes += 1;
+  }
 
   return `${sign}${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(centiseconds).padStart(2, "0")}`;
 }

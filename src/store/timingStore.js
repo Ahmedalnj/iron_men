@@ -14,7 +14,7 @@ function normalizeTimingScalarForStorage(val) {
   const numericValue = normalizeTimingScalar(val);
   if (numericValue === null) return null;
 
-  return Math.round(numericValue);
+  return numericValue;
 }
 
 export function getTimingEntries() {

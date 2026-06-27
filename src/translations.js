@@ -147,6 +147,7 @@ export const translations = {
     literal_time: "الزمن الحقيقي",
     unable_save_timing: "فشل حفظ الأوقات.",
     unable_clear_timing: "فشل مسح الأوقات.",
+    team_not_found: "الرجاء اختيار فريق صالح قبل حفظ الأوقات.",
     team_penalties: "الجزاءات الجماعية",
     officiating: "التحكيم",
 
